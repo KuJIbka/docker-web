@@ -14,7 +14,7 @@ $dbConf = [
 ];
 
 $db = new \PDO(
-    'mysql:host=' . $dbConf['host'] . ';port='.$dbConf['port'] . ';dbname=' . $dbConf['name'],
+    'mysql:host=' . $dbConf['host'] . ';port='.$dbConf['port'] . ';dbname=' . $dbConf['dbname'],
     $dbConf['user'],
     $dbConf['password']
 );
