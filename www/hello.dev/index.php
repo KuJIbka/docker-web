@@ -1,4 +1,6 @@
 <?php
+phpinfo();
+
 ini_set('error_reporting', E_ALL);
 ini_set("display_startup_errors", "1");
 ini_set('display_errors', 1);
@@ -37,4 +39,4 @@ $db->exec("
 
 $st = $db->query('SELECT * FROM `test_table`');
 var_dump($st->fetchAll(\PDO::FETCH_ASSOC));
-phpinfo();
+
