@@ -25,13 +25,21 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
-
-RUN curl -OL "${LIBSODIUM_LIB_URL}" \
- && tar -zxvf libsodium-1.0.13.tar.gz \
- && cd libsodium-1.0.13 \
+RUN curl -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
+ && mkdir -p /usr/src/libsodium \
+ && tar -C /usr/src/libsodium -zxvf /tmp/libsodium_lib.tar.gz \
+ && rm /tmp/libsodium_lib.tar.gz \
+ && cd /usr/src/libsodium \
  && ./configure \
  && make \
  && make install
+
+#RUN curl -OL "${LIBSODIUM_LIB_URL}" \
+# && tar -zxvf libsodium-1.0.13.tar.gz \
+# && cd libsodium-1.0.13 \
+# && ./configure \
+# && make \
+# && make install
 
 RUN curl -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && mkdir -p /usr/src/php/ext/imagick \
