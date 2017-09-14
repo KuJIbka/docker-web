@@ -17,7 +17,7 @@ services:
             - mysql
         volumes:
             - ./www:/var/www
-            - ./conf.d:/usr/local/etc/php/conf.d/
+            - ./images/php/conf.d:/usr/local/etc/php/conf.d/
     mysql:
         image: mysql:8
         ports:
