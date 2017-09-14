@@ -27,7 +27,7 @@ RUN pecl install xdebug \
 
 RUN curl -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
  && mkdir -p /usr/src/libsodium \
- && tar -C /usr/src/libsodium -zxvf /tmp/libsodium_lib.tar.gz --strinp 1 \
+ && tar -C /usr/src/libsodium -zxvf /tmp/libsodium_lib.tar.gz --strip 1 \
  && rm /tmp/libsodium_lib.tar.gz \
  && cd /usr/src/libsodium \
  && ./configure \
