@@ -27,11 +27,11 @@ RUN pecl install xdebug \
 
 
 RUN curl -OL "${LIBSODIUM_LIB_URL}" \
- && tar -zxvf libsodium-1.0.13.tar.gz
- && cd libsodium-${V}
- && ./configure
- && make
- && make install
+ && tar -zxvf libsodium-1.0.13.tar.gz \
+ && cd libsodium-1.0.13 \
+ && ./configure \
+ && make \
+ && make install \
 
 RUN curl -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && mkdir -p /usr/src/php/ext/imagick \
