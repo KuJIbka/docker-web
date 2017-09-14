@@ -6,7 +6,7 @@ services:
             - "80:80"
             - "443:443"
         volumes:
-            - ./hosts:/etc/nginx/conf.d
+            - ./conf.d:/etc/nginx/conf.d
             - ./www:/var/www
             - ./logs:/var/log/nginx
         links:
@@ -17,10 +17,11 @@ services:
             - mysql
         volumes:
             - ./www:/var/www
+            - ./conf.d:/usr/local/etc/php/conf.d/
     mysql:
         image: mysql:8
         ports:
-            - "3306:3306"
+            - "3306:3307"
         volumes:
             - ./mysql:/var/lib/mysql
         environment:
