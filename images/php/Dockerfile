@@ -1,7 +1,10 @@
 FROM php:7.1-fpm
-MAINTAINER PHPtoday.ru <info@phptoday.ru>
+
+ENV PHP_MODULE_IMAGICK_URL "https://pecl.php.net/get/imagick-3.4.3.tgz"
+ENV PHP_MODULE_LIBSODIUM_URL "https://pecl.php.net/get/libsodium-2.0.4.tgz"
 
 RUN apt-get update && apt-get install -y \
+        zip \
         sudo \
         curl \
         wget \
@@ -19,7 +22,19 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
-RUN pecl install libsodium
+RUN curl -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
+    && mkdir -p /usr/src/php/ext/imagick \
+    && tar -C /usr/src/php/ext/imagick -zxvf /tmp/imagick.tar.gz --strip 1 \
+    && rm /tmp/imagick.tar.gz \
+    && docker-php-ext-configure imagick --with-imagick=/opt/local \
+
+    && curl -L -o /tmp/libsodium.tar.gz "${PHP_MODULE_LIBSODIUM_URL}" \
+    && mkdir -p /usr/src/php/ext/libsodium \
+    && tar -C /usr/src/php/ext/libsodium -zxvf /tmp/libsodium.tar.gz --strip 1 \
+    && rm /tmp/libsodium.tar.gz \
+    && docker-php-ext-configure libsodium \
+
+    && docker-php-ext-install libsodium imagick
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
