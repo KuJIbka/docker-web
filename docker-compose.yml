@@ -19,7 +19,7 @@ services:
             - ./www:/var/www
             - ./images/php/conf.d:/usr/local/etc/php/conf.d/
     mysql:
-        image: ./image/mysql
+        image: ./images/mysql
         ports:
             - "3306:3307"
         volumes:
