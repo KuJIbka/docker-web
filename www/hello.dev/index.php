@@ -21,7 +21,7 @@ $db = new \PDO(
 $db->exec('set names ' . $dbConf['charset']);
 $db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 $db->exec("
-  CREATE TABLE `test_table` (
+  CREATE TABLE IF NOT EXISTS `test_table` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`some_field` VARCHAR(50) NULL DEFAULT '' COLLATE 'utf8_unicode_ci',
 	PRIMARY KEY (`id`)
