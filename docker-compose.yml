@@ -19,10 +19,11 @@ services:
             - ./www:/var/www
             - ./images/php/conf.d:/usr/local/etc/php/conf.d/
     mysql:
-        image: mysql:8
+        image: ./image/mysql
         ports:
             - "3306:3307"
         volumes:
             - ./mysql:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: test
