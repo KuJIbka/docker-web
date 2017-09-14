@@ -31,7 +31,7 @@ RUN curl -OL "${LIBSODIUM_LIB_URL}" \
  && cd libsodium-1.0.13 \
  && ./configure \
  && make \
- && make install \
+ && make install
 
 RUN curl -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && mkdir -p /usr/src/php/ext/imagick \
