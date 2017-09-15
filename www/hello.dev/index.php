@@ -37,6 +37,10 @@ $db->exec("
         UPDATE `some_field` = 'someValue'
 ;");
 
-$st = $db->query('SELECT * FROM `test_table`');
-var_dump($st->fetchAll(\PDO::FETCH_ASSOC));
-
+$st = $db->query('SELECT some_field FROM `test_table`');
+if ($st->fetchColumn(0) === 'someValue') {
+    echo "DB - OK<br />\n";
+} else {
+    echo "DB - ERROR<br />\n";
+}
+$db->exec('DROP TABLE test_table');
