@@ -6,6 +6,7 @@ ENV PHP_MODULE_LIBSODIUM_URL "https://pecl.php.net/get/libsodium-2.0.4.tgz"
 
 RUN apt-get update && apt-get install -y \
         zip \
+        nano \
         sudo \
         curl \
         wget \
@@ -18,7 +19,7 @@ RUN apt-get update && apt-get install -y \
 #        libsodium-dev \
         libmagickwand-dev \
         libmagickcore-dev \
-    && docker-php-ext-install -j$(nproc) iconv mcrypt mbstring pdo_mysql zip bcmath gmp json xml curl dom fileinfo \
+    && docker-php-ext-install -j$(nproc) iconv mcrypt mbstring pdo_mysql zip bcmath gmp json xml dom fileinfo \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
 
