@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
-RUN curl -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
+RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
  && mkdir -p /usr/src/libsodium \
  && tar -C /usr/src/libsodium -zxvf /tmp/libsodium_lib.tar.gz --strip 1 \
  && rm /tmp/libsodium_lib.tar.gz \
@@ -42,7 +42,7 @@ RUN curl -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
 # && make \
 # && make install
 
-RUN curl -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
+RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && mkdir -p /usr/src/php/ext/imagick \
     && tar -C /usr/src/php/ext/imagick -zxvf /tmp/imagick.tar.gz --strip 1 \
     && rm /tmp/imagick.tar.gz \
@@ -56,7 +56,7 @@ RUN curl -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
 
     && docker-php-ext-install libsodium imagick
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN curl -k -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 #ADD php.ini /usr/local/etc/php/conf.d/40-custom.ini
 WORKDIR /var/www
