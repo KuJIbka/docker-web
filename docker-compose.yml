@@ -1,12 +1,12 @@
 version: '2'
 services:
     nginx:
-        image: nginx:latest
+        build: ./images/nginx
         ports:
             - "80:80"
             - "443:443"
         volumes:
-            - ./conf.d:/etc/nginx/conf.d
+            - ./images/nginx/conf.d:/etc/nginx/conf.d
             - ./www:/var/www
             - ./logs:/var/log/nginx
         links:
