@@ -3,7 +3,7 @@ FROM php:7.1-fpm
 ENV PHP_MODULE_IMAGICK_URL "https://pecl.php.net/get/imagick-3.4.3.tgz"
 ENV LIBSODIUM_LIB_URL "https://download.libsodium.org/libsodium/releases/libsodium-1.0.13.tar.gz"
 ENV PHP_MODULE_LIBSODIUM_URL "https://pecl.php.net/get/libsodium-2.0.4.tgz"
-ENV REDIS_URL "https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz"
+ENV REDIS_URL "https://github.com/phpredis/phpredis/archive/3.1.3.tar.gz"
 
 RUN apt-get update && apt-get install -y \
         zip \
