@@ -25,8 +25,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd
 
 RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-    && pecl install redis
+    && docker-php-ext-enable xdebug \
+    && pecl install redis \
     && docker-php-ext-enable redis
 
 RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
