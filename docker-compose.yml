@@ -15,6 +15,7 @@ services:
         build: ./images/php
         links:
             - mysql
+            - redis
         volumes:
             - ./www:/var/www
             - ./images/php/conf.d:/usr/local/etc/php/conf.d/
@@ -25,3 +26,7 @@ services:
         volumes:
             - ./mysql:/var/lib/mysql
             - ./images/mysql/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    redis:
+        build: ./images/redis
+        volumes:
+          - ./images/redis/redis.conf:/usr/local/etc/redis/redis.conf

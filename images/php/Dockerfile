@@ -3,6 +3,7 @@ FROM php:7.1-fpm
 ENV PHP_MODULE_IMAGICK_URL "https://pecl.php.net/get/imagick-3.4.3.tgz"
 ENV LIBSODIUM_LIB_URL "https://download.libsodium.org/libsodium/releases/libsodium-1.0.13.tar.gz"
 ENV PHP_MODULE_LIBSODIUM_URL "https://pecl.php.net/get/libsodium-2.0.4.tgz"
+ENV REDIS_URL "https://github.com/phpredis/phpredis/archive/$PHPREDIS_VERSION.tar.gz"
 
 RUN apt-get update && apt-get install -y \
         zip \
@@ -25,6 +26,8 @@ RUN apt-get update && apt-get install -y \
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
+    && pecl install redis
+    && docker-php-ext-enable redis
 
 RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
  && mkdir -p /usr/src/libsodium \
@@ -34,13 +37,6 @@ RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
  && ./configure \
  && make \
  && make install
-
-#RUN curl -OL "${LIBSODIUM_LIB_URL}" \
-# && tar -zxvf libsodium-1.0.13.tar.gz \
-# && cd libsodium-1.0.13 \
-# && ./configure \
-# && make \
-# && make install
 
 RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && mkdir -p /usr/src/php/ext/imagick \
@@ -55,6 +51,12 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && docker-php-ext-configure libsodium \
 
     && docker-php-ext-install libsodium imagick
+
+#RUN curl -L -o /tmp/redis.tar.gz "${REDIS_URL}" \
+#    && tar xfz /tmp/redis.tar.gz \
+#    && rm -r /tmp/redis.tar.gz \
+#    && mv phpredis-$PHPREDIS_VERSION /usr/src/php/ext/redis \
+#    && docker-php-ext-install redis
 
 RUN curl -k -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
