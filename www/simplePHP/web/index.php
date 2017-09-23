@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 $dbConf = [
     'host' => 'mysql',
     'port' => '3306',
-    'dbname' => 'test',
+    'dbname' => 'simple_php',
     'user' => 'root',
     'password' => 'secret',
     'charset' => 'utf8',
