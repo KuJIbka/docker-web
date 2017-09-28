@@ -7,6 +7,7 @@ services:
             - "443:443"
         volumes:
             - ./images/nginx/conf.d:/etc/nginx/conf.d
+            - ./images/nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./www:/var/www
             - ./logs:/var/log/nginx
         links:
