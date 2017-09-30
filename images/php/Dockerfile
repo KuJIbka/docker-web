@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libpng12-dev \
         libgmp-dev \
+        libv8-dev \
 #        libsodium-dev \
         libmagickwand-dev \
         libmagickcore-dev \
