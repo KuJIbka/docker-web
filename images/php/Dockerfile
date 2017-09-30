@@ -50,7 +50,12 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && rm /tmp/libsodium.tar.gz \
     && docker-php-ext-configure libsodium \
 
-    && docker-php-ext-install libsodium imagick
+    && git clone https://github.com/phpv8/v8js.git /usr/src/php/ext/phpv8 \
+    && docker-php-ext-configure phpv8 \
+
+    && docker-php-ext-install libsodium imagick phpv8
+
+
 
 #RUN curl -L -o /tmp/redis.tar.gz "${REDIS_URL}" \
 #    && tar xfz /tmp/redis.tar.gz \
