@@ -70,24 +70,17 @@ RUN apt-get -y install --no-install-recommends \
     && make native library=shared snapshot=off -j4 \
     && mkdir -p /usr/local/lib \
     && cp /usr/local/src/v8/out/native/lib.target/lib*.so /usr/local/lib \
-    && cat <<EOF | ar -M \
-       create /usr/local/lib/libv8_libplatform.a \
-       addlib /usr/local/src/v8/out/native/obj.target/tools/gyp/libv8_libplatform.a \
-       save \
-       end \
-       EOF \
+    && echo -e "create /usr/local/lib/libv8_libplatform.a\naddlib /usr/local/src/v8/out/native/obj.target/tools/gyp/libv8_libplatform.a\nsave\nend" | ar -M \
     && cp -R /usr/local/src/v8/include /usr/local \
     && chrpath -r '$ORIGIN' /usr/local/lib/libv8.so \
     && cd /usr/local/src \
-    && curl -LO https://github.com/phpv8/v8js/releases/download/${V8JS_VERSION}/v8js-${V8JS_VERSION}.tgz \
+    && curl -LO https://github.com/phpv8/v8js/archive/${V8JS_VERSION}.tar.gz \
     && tar xzf v8js-${V8JS_VERSION}.tgz \
     && cd v8js-${V8JS_VERSION} \
     && phpize \
     && ./configure --with-v8js=/usr/local \
     && export NO_INTERACTION=1 \
     && make all test install
-
-
 
 
 #RUN curl -L -o /tmp/redis.tar.gz "${REDIS_URL}" \
