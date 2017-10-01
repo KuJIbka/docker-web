@@ -4,7 +4,8 @@ ENV PHP_MODULE_IMAGICK_URL "https://pecl.php.net/get/imagick-3.4.3.tgz"
 ENV LIBSODIUM_LIB_URL "https://download.libsodium.org/libsodium/releases/libsodium-1.0.13.tar.gz"
 ENV PHP_MODULE_LIBSODIUM_URL "https://pecl.php.net/get/libsodium-2.0.4.tgz"
 ENV REDIS_URL "https://github.com/phpredis/phpredis/archive/3.1.3.tar.gz"
-ENV V8_VERSION 1.4.1
+ENV V8_VERSION 6.3.239
+ENV V8JS_VERSION=1.4.1
 ENV NO_INTERACTION 1
 
 
@@ -57,30 +58,37 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
 
     && docker-php-ext-install libsodium imagick
 
-RUN apt-get install -y \
+RUN apt-get -y install --no-install-recommends \
          build-essential \
          chrpath \
-    && cd /tmp \
-    && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
-    && export PATH=`pwd`/depot_tools:"$PATH" \
+    && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /usr/local/depot_tools \
+    && export PATH=$PATH:/usr/local/depot_tools \
+    && cd /usr/local/src \
     && fetch v8 \
-    && cd v8 \
-#    && gclient sync \
-    && export GYPFLAGS="-Dv8_use_external_startup_data=0" \
-    && export GYPFLAGS="${GYPFLAGS} -Dlinux_use_bundled_gold=0" \
-    && make native library=shared snapshot=off -j8 \
-    && mkdir -p /opt/v8/{lib,include} \
-    && cp out/native/lib.target/lib*.so /opt/v8/lib/ \
-    && cp -R include/* /opt/v8/include \
-    && chrpath -r '$ORIGIN' /opt/v8/lib/libv8.so \
-    && echo -e "create /opt/v8/lib/libv8_libplatform.a\naddlib out/native/obj.target/src/libv8_libplatform.a\nsave\nend" | sudo ar -M
-
-RUN cd /tmp \
-    && git clone https://github.com/phpv8/v8js.git \
-    && cd v8js \
+    && cd /usr/local/src/v8 \
+    && git checkout "${V8_VERSION}" \
+    && make native library=shared snapshot=off -j4 \
+    && mkdir -p /usr/local/lib \
+    && cp /usr/local/src/v8/out/native/lib.target/lib*.so /usr/local/lib \
+    && cat <<EOF | ar -M
+       create /usr/local/lib/libv8_libplatform.a
+       addlib /usr/local/src/v8/out/native/obj.target/tools/gyp/libv8_libplatform.a
+       save
+       end
+       EOF \
+    && cp -R /usr/local/src/v8/include /usr/local \
+    && chrpath -r '$ORIGIN' /usr/local/lib/libv8.so \
+    && cd /usr/local/src \
+    && curl -LO https://github.com/phpv8/v8js/releases/download/${V8JS_VERSION}/v8js-${V8JS_VERSION}.tgz \
+    && tar xzf v8js-${V8JS_VERSION}.tgz \
+    && cd v8js-${V8JS_VERSION} \
     && phpize \
-    && ./configure --with-v8js=/opt/v8 \
-    && make && make install
+    && ./configure --with-v8js=/usr/local \
+    && export NO_INTERACTION=1 \
+    && make all test install
+
+
+
 
 #RUN curl -L -o /tmp/redis.tar.gz "${REDIS_URL}" \
 #    && tar xfz /tmp/redis.tar.gz \
