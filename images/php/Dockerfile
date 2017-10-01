@@ -73,8 +73,7 @@ RUN apt-get install -y \
     && cp out/native/lib.target/lib*.so /opt/v8/lib/ \
     && cp -R include/* /opt/v8/include \
     && chrpath -r '$ORIGIN' /opt/v8/lib/libv8.so \
-    && echo -e "create /opt/v8/lib/libv8_libplatform.a\naddlib out/native/obj.target/src/libv8_libplatform.a\nsave\nend" | sudo ar -M \
-    && cho -e "create /opt/v8/lib/libv8_libplatform.a\naddlib out/native/obj.target/tools/gyp/libv8_libplatform.a\nsave\nend" | sudo ar -M
+    && echo -e "create /opt/v8/lib/libv8_libplatform.a\naddlib out/native/obj.target/src/libv8_libplatform.a\nsave\nend" | sudo ar -M
 
 RUN cd /rmp \
     && git clone https://github.com/phpv8/v8js.git \
