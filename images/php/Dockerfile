@@ -59,17 +59,17 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && docker-php-ext-install libsodium imagick
 
 
-RUN cd /usr/src && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-env PATH /usr/src/depot_tools:$PATH
+#RUN cd /usr/src && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
+#env PATH /usr/src/depot_tools:$PATH
 
 # Install v8
-RUN cd /usr/src && fetch --nohooks v8
-RUN cd /usr/src/v8 && make native library=shared snapshot=off -j 4
-RUN cp -R /usr/src/v8/out/native/lib.target/lib* /lib64/
-RUN cp /usr/src/v8/out/native/obj.target/tools/gyp/libv8_libplatform.a /usr/lib64/
-RUN cp -R /usr/src/v8/include /usr/local
+#RUN cd /usr/src && fetch --nohooks v8
+#RUN cd /usr/src/v8 && make native library=shared snapshot=off -j 4
+#RUN cp -R /usr/src/v8/out/native/lib.target/lib* /lib64/
+#RUN cp /usr/src/v8/out/native/obj.target/tools/gyp/libv8_libplatform.a /usr/lib64/
+#RUN cp -R /usr/src/v8/include /usr/local
 # Install v8js
-RUN echo "/usr/lib64" | pecl install v8js-${V8JS_VERSION}
+#RUN echo "/usr/lib64" | pecl install v8js-${V8JS_VERSION}
 
 
 #RUN apt-get -y install --no-install-recommends \
@@ -116,6 +116,15 @@ WORKDIR /var/www
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 RUN apt-get install -y nodejs build-essential
+
+RUN cd /usr/local/src \
+    && curl -L https://github.com/phpv8/v8js/archive/${V8JS_VERSION}.tar.gz -o v8js-${V8JS_VERSION}.tar.gz \
+    && tar xzf v8js-${V8JS_VERSION}.tar.gz \
+    && cd v8js-${V8JS_VERSION} \
+    && phpize \
+    && ./configure --with-v8js=/usr/local \
+    && export NO_INTERACTION=1 \
+    && make all test install
 
 EXPOSE 9001
 CMD ["php-fpm"]
