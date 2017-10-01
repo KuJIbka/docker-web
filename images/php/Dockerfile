@@ -32,8 +32,8 @@ RUN pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && pecl install redis \
     && docker-php-ext-enable redis \
-    && pecl install v8js
-    && docker-php-ext-enable v8js \
+    && pecl install v8js \
+    && docker-php-ext-enable v8js
 
 RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
  && mkdir -p /usr/src/libsodium \
