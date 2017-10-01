@@ -79,7 +79,7 @@ RUN apt-get -y install --no-install-recommends \
     && cp -R /usr/local/src/v8/include /usr/local \
     && chrpath -r '$ORIGIN' /usr/local/lib/libv8.so \
     && cd /usr/local/src \
-    && curl -LO https://github.com/phpv8/v8js/archive/${V8JS_VERSION}.tar.gz -o v8js-${V8JS_VERSION}.tar.gz \
+    && curl -L https://github.com/phpv8/v8js/archive/${V8JS_VERSION}.tar.gz -o v8js-${V8JS_VERSION}.tar.gz \
     && tar xzf v8js-${V8JS_VERSION}.tar.gz \
     && cd v8js-${V8JS_VERSION} \
     && phpize \
