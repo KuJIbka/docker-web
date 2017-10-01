@@ -4,7 +4,7 @@ ENV PHP_MODULE_IMAGICK_URL "https://pecl.php.net/get/imagick-3.4.3.tgz"
 ENV LIBSODIUM_LIB_URL "https://download.libsodium.org/libsodium/releases/libsodium-1.0.13.tar.gz"
 ENV PHP_MODULE_LIBSODIUM_URL "https://pecl.php.net/get/libsodium-2.0.4.tgz"
 ENV REDIS_URL "https://github.com/phpredis/phpredis/archive/3.1.3.tar.gz"
-ENV V8_VERSION 6.0.286.57
+ENV V8_VERSION 6.0.318
 ENV V8JS_VERSION=1.4.1
 ENV NO_INTERACTION 1
 
