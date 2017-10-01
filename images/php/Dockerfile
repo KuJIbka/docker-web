@@ -62,7 +62,7 @@ RUN apt-get update && \
     git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /tmp/depot_tools && \
     export PATH="$PATH:/tmp/depot_tools" && \
     \
-    cd /usr/local/src && fetch -h v8 && cd v8 && \
+    cd /usr/local/src && fetch v8 && cd v8 && \
     git checkout "${V8_VERSION}" && gclient sync && \
     tools/dev/v8gen.py -vv x64.release -- is_component_build=true && \
     ninja -C out.gn/x64.release/ && \
