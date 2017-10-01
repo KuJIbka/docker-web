@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libpng12-dev \
         libgmp-dev \
-        libv8-dev \
+        libglib2.0-dev \
 #        libsodium-dev \
         libmagickwand-dev \
         libmagickcore-dev \
@@ -31,9 +31,8 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && pecl install redis \
-    && docker-php-ext-enable redis \
-    && pecl install v8js \
-    && docker-php-ext-enable v8js
+    && docker-php-ext-enable redis
+
 
 RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
  && mkdir -p /usr/src/libsodium \
@@ -57,6 +56,32 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && docker-php-ext-configure libsodium \
 
     && docker-php-ext-install libsodium imagick
+
+RUN apt-get install -y \
+         build-essential \
+         chrpath \
+    && cd /tmp \
+    && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
+    && export PATH=`pwd`/depot_tools:"$PATH" \
+    && fetch v8 \
+    && cd v8 \
+    && gclient sync \
+    && export GYPFLAGS="-Dv8_use_external_startup_data=0" \
+    && export GYPFLAGS="${GYPFLAGS} -Dlinux_use_bundled_gold=0" \
+    && make native library=shared snapshot=on -j8 \
+    && mkdir -p /opt/v8/{lib,include} \
+    && cp out/native/lib.target/lib*.so /opt/v8/lib/ \
+    && cp -R include/* /opt/v8/include \
+    && chrpath -r '$ORIGIN' /opt/v8/lib/libv8.so
+    && echo -e "create /opt/v8/lib/libv8_libplatform.a\naddlib out/native/obj.target/src/libv8_libplatform.a\nsave\nend" | sudo ar -M \
+    && cho -e "create /opt/v8/lib/libv8_libplatform.a\naddlib out/native/obj.target/tools/gyp/libv8_libplatform.a\nsave\nend" | sudo ar -M
+
+RUN cd /rmp \
+    && git clone https://github.com/phpv8/v8js.git \
+    && cd v8js \
+    && phpize \
+    && ./configure --with-v8js=/opt/v8 \
+    && make && make install
 
 #RUN curl -L -o /tmp/redis.tar.gz "${REDIS_URL}" \
 #    && tar xfz /tmp/redis.tar.gz \
