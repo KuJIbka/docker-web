@@ -10,6 +10,8 @@ ENV NO_INTERACTION 1
 
 
 RUN apt-get update && apt-get install -y \
+        software-properties-common \
+        python-software-properties \
         zip \
         nano \
         sudo \
@@ -21,7 +23,6 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libpng12-dev \
         libgmp-dev \
-        libglib2.0-dev \
 #        libsodium-dev \
         libmagickwand-dev \
         libmagickcore-dev \
