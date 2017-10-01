@@ -4,7 +4,7 @@ ENV PHP_MODULE_IMAGICK_URL "https://pecl.php.net/get/imagick-3.4.3.tgz"
 ENV LIBSODIUM_LIB_URL "https://download.libsodium.org/libsodium/releases/libsodium-1.0.13.tar.gz"
 ENV PHP_MODULE_LIBSODIUM_URL "https://pecl.php.net/get/libsodium-2.0.4.tgz"
 ENV REDIS_URL "https://github.com/phpredis/phpredis/archive/3.1.3.tar.gz"
-ENV V8_VERSION 6.3.239
+ENV V8_VERSION 1.4.1
 ENV NO_INTERACTION 1
 
 
@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libpng12-dev \
         libgmp-dev \
+        libv8-dev \
 #        libsodium-dev \
         libmagickwand-dev \
         libmagickcore-dev \
@@ -30,7 +31,9 @@ RUN apt-get update && apt-get install -y \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && pecl install redis \
-    && docker-php-ext-enable redis
+    && docker-php-ext-enable redis \
+    && pecl install v8js
+    && docker-php-ext-enable v8js \
 
 RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
  && mkdir -p /usr/src/libsodium \
@@ -54,32 +57,6 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && docker-php-ext-configure libsodium \
 
     && docker-php-ext-install libsodium imagick
-
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        xz-utils && \
-    \
-    git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /tmp/depot_tools && \
-    export PATH="$PATH:/tmp/depot_tools" && \
-    \
-    cd /usr/local/src && fetch v8 && cd v8 && \
-    git checkout "${V8_VERSION}" && gclient sync && \
-    tools/dev/v8gen.py -vv x64.release -- is_component_build=true && \
-    ninja -C out.gn/x64.release/ && \
-    \
-    mkdir -p /usr/local/lib && \
-    cp out.gn/x64.release/lib*.so out.gn/x64.release/*_blob.bin out.gn/x64.release/icudtl.dat /usr/local/lib && \
-    cp -R include/* /usr/local/include/ && \
-    \
-    git clone https://github.com/phpv8/v8js.git /usr/local/src/v8js && \
-    cd /usr/local/src/v8js && phpize && ./configure --with-v8js=/usr/local && \
-    export NO_INTERACTION=1 && make all -j4 && make test install && \
-    \
-    cd /tmp && \
-    rm -rf /tmp/depot_tools /usr/local/src/v8 /usr/local/src/v8js && \
-    apt-get remove -y xz-utils && \
-    apt-get autoremove -y && \
-    apt-get clean
 
 #RUN curl -L -o /tmp/redis.tar.gz "${REDIS_URL}" \
 #    && tar xfz /tmp/redis.tar.gz \
