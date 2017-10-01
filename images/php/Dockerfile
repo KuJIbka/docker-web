@@ -66,7 +66,7 @@ RUN apt-get -y install --no-install-recommends \
     && cd /usr/local/src \
     && fetch v8 \
     && cd /usr/local/src/v8 \
-    && git checkout "${V8_VERSION}" \
+#    && git checkout "${V8_VERSION}" \
     && make native library=shared snapshot=off -j4 \
     && mkdir -p /usr/local/lib \
     && cp /usr/local/src/v8/out/native/lib.target/lib*.so /usr/local/lib \
