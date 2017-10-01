@@ -65,17 +65,17 @@ RUN apt-get install -y \
     && export PATH=`pwd`/depot_tools:"$PATH" \
     && fetch v8 \
     && cd v8 \
-    && gclient sync \
+#    && gclient sync \
     && export GYPFLAGS="-Dv8_use_external_startup_data=0" \
     && export GYPFLAGS="${GYPFLAGS} -Dlinux_use_bundled_gold=0" \
-    && make native library=shared snapshot=on -j8 \
+    && make native library=shared snapshot=off -j8 \
     && mkdir -p /opt/v8/{lib,include} \
     && cp out/native/lib.target/lib*.so /opt/v8/lib/ \
     && cp -R include/* /opt/v8/include \
     && chrpath -r '$ORIGIN' /opt/v8/lib/libv8.so \
     && echo -e "create /opt/v8/lib/libv8_libplatform.a\naddlib out/native/obj.target/src/libv8_libplatform.a\nsave\nend" | sudo ar -M
 
-RUN cd /rmp \
+RUN cd /tmp \
     && git clone https://github.com/phpv8/v8js.git \
     && cd v8js \
     && phpize \
