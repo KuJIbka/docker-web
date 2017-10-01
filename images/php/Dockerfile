@@ -63,7 +63,7 @@ RUN cd /usr/src && git clone https://chromium.googlesource.com/chromium/tools/de
 env PATH /usr/src/depot_tools:$PATH
 
 # Install v8
-RUN cd /usr/src && fetch v8
+RUN cd /usr/src && fetch --nohooks v8
 RUN cd /usr/src/v8 && make native library=shared snapshot=off -j 4
 RUN cp -R /usr/src/v8/out/native/lib.target/lib* /lib64/
 RUN cp /usr/src/v8/out/native/obj.target/tools/gyp/libv8_libplatform.a /usr/lib64/
