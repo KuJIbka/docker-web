@@ -70,11 +70,11 @@ RUN apt-get -y install --no-install-recommends \
     && make native library=shared snapshot=off -j4 \
     && mkdir -p /usr/local/lib \
     && cp /usr/local/src/v8/out/native/lib.target/lib*.so /usr/local/lib \
-    && cat <<EOF | ar -M
-       create /usr/local/lib/libv8_libplatform.a
-       addlib /usr/local/src/v8/out/native/obj.target/tools/gyp/libv8_libplatform.a
-       save
-       end
+    && cat <<EOF | ar -M \
+       create /usr/local/lib/libv8_libplatform.a \
+       addlib /usr/local/src/v8/out/native/obj.target/tools/gyp/libv8_libplatform.a \
+       save \
+       end \
        EOF \
     && cp -R /usr/local/src/v8/include /usr/local \
     && chrpath -r '$ORIGIN' /usr/local/lib/libv8.so \
