@@ -58,7 +58,7 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
 
     && docker-php-ext-install libsodium imagick
 
-RUN add-apt-repository ppa:pinepain/php && apt-get update -y && apt-get install -y php-v8
+RUN add-apt-repository ppa:pinepain/php && apt-get update -y && apt-get install -y libv8-6.3 php-v8
 
 #RUN cd /usr/src && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 #env PATH /usr/src/depot_tools:$PATH
