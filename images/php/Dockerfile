@@ -57,8 +57,7 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        python2.7 xz-utils && \
-    ln -s /usr/bin/python2.7 /usr/bin/python && \
+        xz-utils && \
     \
     git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /tmp/depot_tools && \
     export PATH="$PATH:/tmp/depot_tools" && \
@@ -78,7 +77,7 @@ RUN apt-get update && \
     \
     cd /tmp && \
     rm -rf /tmp/depot_tools /usr/local/src/v8 /usr/local/src/v8js && \
-    apt-get remove -y python2.7 xz-utils && \
+    apt-get remove -y xz-utils && \
     apt-get autoremove -y && \
     apt-get clean
 
