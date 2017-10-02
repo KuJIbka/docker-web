@@ -142,5 +142,14 @@ RUN cd /tmp \
        out.gn/x64.release/icudtl.dat /opt/v8/lib/ \
     &&  cp -R include/* /opt/v8/include/
 
+RUN cd /usr/local/src \
+    && curl -L https://github.com/phpv8/v8js/archive/${V8JS_VERSION}.tar.gz -o v8js-${V8JS_VERSION}.tar.gz \
+    && tar xzf v8js-${V8JS_VERSION}.tar.gz \
+    && cd v8js-${V8JS_VERSION} \
+    && phpize \
+    && ./configure --with-v8js=/opt/v8 \
+    && export NO_INTERACTION=1 \
+    && make all test install
+
 EXPOSE 9001
 CMD ["php-fpm"]
