@@ -136,7 +136,8 @@ RUN cd /tmp \
     && ninja -C out.gn/x64.release/ \
 
     # Install to /opt/v8/
-    && mkdir -p /opt/v8/{lib,include} \
+    && mkdir -p /opt/v8/lib \
+    && mkdir -p /opt/v8/include \
     && cp out.gn/x64.release/lib*.so out.gn/x64.release/*_blob.bin \
        out.gn/x64.release/icudtl.dat /opt/v8/lib/ \
     &&  cp -R include/* /opt/v8/include/
