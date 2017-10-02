@@ -10,8 +10,6 @@ ENV NO_INTERACTION 1
 
 
 RUN apt-get update && apt-get install -y \
-        software-properties-common \
-        python-software-properties \
         zip \
         nano \
         sudo \
@@ -59,7 +57,6 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
 
     && docker-php-ext-install libsodium imagick
 
-RUN add-apt-repository ppa:pinepain/php && apt-get update -y && apt-get install -y libv8-6.3 php-v8
 
 #RUN cd /usr/src && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
 #env PATH /usr/src/depot_tools:$PATH
@@ -117,16 +114,32 @@ RUN curl -k -sS https://getcomposer.org/installer | php -- --install-dir=/usr/lo
 WORKDIR /var/www
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-RUN apt-get install -y nodejs build-essential
+RUN apt-get install -y nodejs build-essential libglib2.0-dev
 
-RUN cd /usr/local/src \
-    && curl -L https://github.com/phpv8/v8js/archive/${V8JS_VERSION}.tar.gz -o v8js-${V8JS_VERSION}.tar.gz \
-    && tar xzf v8js-${V8JS_VERSION}.tar.gz \
-    && cd v8js-${V8JS_VERSION} \
-    && phpize \
-    && ./configure --with-v8js=/usr/local \
-    && export NO_INTERACTION=1 \
-    && make all test install
+RUN cd /tmp \
+    # Install depot_tools first (needed for source checkout)
+    && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git \
+    && export PATH=`pwd`/depot_tools:"$PATH" \
+
+    # Download v8
+    && fetch v8 \
+    && cd v8 \
+
+    # (optional) If you'd like to build a certain version:
+    && git checkout ${V8_VERSION} \
+    && gclient sync \
+
+    # Setup GN
+    && tools/dev/v8gen.py -vv x64.release -- is_component_build=true \
+
+    # Build
+    && ninja -C out.gn/x64.release/ \
+
+    # Install to /opt/v8/
+    && mkdir -p /opt/v8/{lib,include} \
+    && cp out.gn/x64.release/lib*.so out.gn/x64.release/*_blob.bin \
+       out.gn/x64.release/icudtl.dat /opt/v8/lib/ \
+    &&  cp -R include/* /opt/v8/include/
 
 EXPOSE 9001
 CMD ["php-fpm"]
