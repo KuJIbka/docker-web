@@ -57,51 +57,6 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
 
     && docker-php-ext-install libsodium imagick
 
-
-#RUN cd /usr/src && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git
-#env PATH /usr/src/depot_tools:$PATH
-
-# Install v8
-#RUN cd /usr/src && fetch --nohooks v8
-#RUN cd /usr/src/v8 && make native library=shared snapshot=off -j 4
-#RUN cp -R /usr/src/v8/out/native/lib.target/lib* /lib64/
-#RUN cp /usr/src/v8/out/native/obj.target/tools/gyp/libv8_libplatform.a /usr/lib64/
-#RUN cp -R /usr/src/v8/include /usr/local
-# Install v8js
-#RUN echo "/usr/lib64" | pecl install v8js-${V8JS_VERSION}
-
-
-#RUN apt-get -y install --no-install-recommends \
-#         build-essential \
-#         chrpath \
-#    && git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /usr/local/depot_tools \
-#    && export PATH=$PATH:/usr/local/depot_tools \
-#    && cd /usr/local/src \
-#    && fetch v8 \
-#    && cd /usr/local/src/v8 \
-#    && git checkout "${V8_VERSION}" \
-#    && make native library=shared snapshot=off -j4 \
-#    && mkdir -p /usr/local/lib \
-#    && cp /usr/local/src/v8/out/native/lib.target/lib*.so /usr/local/lib \
-#    && cat <<EOF | ar -M \
-#       create /usr/local/lib/libv8_libplatform.a \
-#       addlib /usr/local/src/v8/out/native/obj.target/tools/gyp/libv8_libplatform.a \
-#       save \
-#       end \
-#       EOF \
-#    && cp -R /usr/local/src/v8/include /usr/local \
-#    && chrpath -r '$ORIGIN' /usr/local/lib/libv8.so
-
-#RUN cd /usr/local/src \
-#    && curl -L https://github.com/phpv8/v8js/archive/${V8JS_VERSION}.tar.gz -o v8js-${V8JS_VERSION}.tar.gz \
-#    && tar xzf v8js-${V8JS_VERSION}.tar.gz \
-#    && cd v8js-${V8JS_VERSION} \
-#    && phpize \
-#    && ./configure --with-v8js=/usr/local \
-#    && export NO_INTERACTION=1 \
-#    && make all test install
-
-
 #RUN curl -L -o /tmp/redis.tar.gz "${REDIS_URL}" \
 #    && tar xfz /tmp/redis.tar.gz \
 #    && rm -r /tmp/redis.tar.gz \
