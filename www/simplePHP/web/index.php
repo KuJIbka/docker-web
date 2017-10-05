@@ -50,7 +50,7 @@ $db->exec('DROP TABLE test_table');
 echo "Start check Redis...<br />\n";
 $redis = new \Redis();
 $redis->connect(
-    'localhost',
+    'redis',
     6379,
     null,
     null,
@@ -65,7 +65,7 @@ if ($redis->get('someKey') === 'someValue') {
 
 # ------------------------------------------------------------------
 echo "Start check Mongo...<br />\n";
-$manager = new MongoDB\Driver\Manager('mongodb://127.0.0.1:27017/');
+$manager = new MongoDB\Driver\Manager('mongodb://mongo:27017/');
 $command = new MongoDB\Driver\Command([ 'create' => 'testCollation' ]);
 $manager->executeCommand('test', $command);
 $insert = new MongoDB\Driver\BulkWrite();
