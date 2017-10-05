@@ -42,9 +42,7 @@ RUN pecl install xdebug \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && pecl install mongodb \
-    && docker-php-ext-enable mongodb \
-    && pecl install xhprof-0.9.4 \
-    && docker-php-ext-enable xhprof
+    && docker-php-ext-enable mongodb
 
 RUN git clone https://github.com/tideways/php-profiler-extension.git \
  && cd php-profiler-extension \
@@ -74,7 +72,7 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && rm /tmp/libsodium.tar.gz \
     && docker-php-ext-configure libsodium \
 
-    && docker-php-ext-install libsodium imagick
+    && docker-php-ext-install libsodium imagick tideways
 
 #RUN curl -L -o /tmp/redis.tar.gz "${REDIS_URL}" \
 #    && tar xfz /tmp/redis.tar.gz \
