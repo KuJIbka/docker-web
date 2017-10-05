@@ -72,7 +72,7 @@ RUN curl -k -L -o /tmp/imagick.tar.gz "${PHP_MODULE_IMAGICK_URL}" \
     && rm /tmp/libsodium.tar.gz \
     && docker-php-ext-configure libsodium \
 
-    && docker-php-ext-install libsodium imagick tideways
+    && docker-php-ext-install libsodium imagick
 
 #RUN curl -L -o /tmp/redis.tar.gz "${REDIS_URL}" \
 #    && tar xfz /tmp/redis.tar.gz \
