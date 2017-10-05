@@ -81,3 +81,4 @@ if ($result->getInsertedCount()) {
     echo "Mongo - ERROR<br />\n";
 }
 $command = new MongoDB\Driver\Command([ 'drop' => 'testCollation' ]);
+$manager->executeCommand('test', $command);
