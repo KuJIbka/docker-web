@@ -43,7 +43,7 @@ RUN pecl install xdebug \
     && docker-php-ext-enable redis \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb \
-    && pecl install xhprof \
+    && pecl install xhprof-0.9.4 \
     && docker-php-ext-enable xhprof
 
 RUN git clone https://github.com/tideways/php-profiler-extension.git \
