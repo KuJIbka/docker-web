@@ -4,6 +4,7 @@ phpinfo();
 ini_set('error_reporting', E_ALL);
 ini_set("display_startup_errors", "1");
 ini_set('display_errors', 1);
+echo "Start check DB...<br />\n";
 $dbConf = [
     'host' => 'mysql',
     'port' => '3306',
@@ -46,7 +47,7 @@ if ($st->fetchColumn(0) === 'someValue') {
 $db->exec('DROP TABLE test_table');
 
 # ------------------------------------------------------------------
-
+echo "Start check Redis...<br />\n";
 $redis = new \Redis();
 $redis->connect(
     'localhost',
@@ -63,7 +64,7 @@ if ($redis->get('someKey') === 'someValue') {
 }
 
 # ------------------------------------------------------------------
-
+echo "Start check Mongo...<br />\n";
 $manager = new MongoDB\Driver\Manager('mongodb://127.0.0.1:27017/');
 $command = new MongoDB\Driver\Command([ 'create' => 'testCollation' ]);
 $manager->executeCommand('test', $command);
