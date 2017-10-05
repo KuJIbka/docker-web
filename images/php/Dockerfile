@@ -21,8 +21,8 @@ RUN apt-get update && apt-get install -y \
         libmcrypt-dev \
         libpng12-dev \
         libgmp-dev \
-        libbson-dev \
-        libmongoc-dev \
+        libbson \
+        libmongoc \
         libssl-dev \
 #        libsodium-dev \
         libmagickwand-dev \
