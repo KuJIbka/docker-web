@@ -30,12 +30,12 @@ RUN apt-get update && apt-get install -y \
 
 RUN git config --global http.sslverify false
 
-#RUN apt-get install --reinstall ca-certificates \
-#    && mkdir /usr/local/share/ca-certificates/cacert.org \
-#    && wget -P /usr/local/share/ca-certificates/cacert.org http://www.cacert.org/certs/root.crt http://www.cacert.org/certs/class3.crt \
-#    && update-ca-certificates \
-#    && git config --global https.sslCAinfo /etc/ssl/certs/ca-certificates.crt \
-#    && git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt
+RUN apt-get install --reinstall ca-certificates \
+    && mkdir /usr/local/share/ca-certificates/cacert.org \
+    && wget -P /usr/local/share/ca-certificates/cacert.org http://www.cacert.org/certs/root.crt http://www.cacert.org/certs/class3.crt \
+    && update-ca-certificates \
+    && git config --global https.sslCAinfo /etc/ssl/certs/ca-certificates.crt \
+    && git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug \
