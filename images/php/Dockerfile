@@ -28,6 +28,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
 
+ENV git config --global http.sslverify false \
+    && git config --global https.sslverify false
+
 RUN apt-get install --reinstall ca-certificates \
     && mkdir /usr/local/share/ca-certificates/cacert.org \
     && wget -P /usr/local/share/ca-certificates/cacert.org http://www.cacert.org/certs/root.crt http://www.cacert.org/certs/class3.crt \
