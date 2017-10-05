@@ -8,7 +8,6 @@ ENV V8_VERSION 6.0.318
 ENV V8JS_VERSION=1.4.1
 ENV NO_INTERACTION 1
 
-
 RUN apt-get update && apt-get install -y \
         zip \
         nano \
@@ -30,12 +29,16 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
 
+RUN git config --global https.sslCAinfo /etc/ssl/certs/ca-certificates.crt
+
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb
+
+
 
 RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
  && mkdir -p /usr/src/libsodium \
