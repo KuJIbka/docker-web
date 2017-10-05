@@ -42,7 +42,16 @@ RUN pecl install xdebug \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && pecl install mongodb \
-    && docker-php-ext-enable mongodb
+    && docker-php-ext-enable mongodb \
+    && pecl install xhprof \
+    && docker-php-ext-enable xhprof
+
+RUN git clone https://github.com/tideways/php-profiler-extension.git \
+ && cd php-profiler-extension \
+ && phpize
+ &&  ./configure
+ && make
+ && make install
 
 RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
  && mkdir -p /usr/src/libsodium \
