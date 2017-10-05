@@ -17,6 +17,7 @@ services:
         links:
             - mysql
             - redis
+            - mongo
         volumes:
             - ./www:/var/www
             - ./images/php/conf.d:/usr/local/etc/php/conf.d/
@@ -27,6 +28,14 @@ services:
         volumes:
             - ./mysql:/var/lib/mysql
             - ./images/mysql/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    mongo:
+        build: ./images/mongo
+        ports:
+            - "27018:27017"
+        volumes:
+            - ./mongo:/data/db
+            - ./images/mongo/mongod.conf:/etc/mongod.conf
+
     redis:
         build: ./images/redis
         volumes:
