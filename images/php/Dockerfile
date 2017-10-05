@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
         libpng12-dev \
         libgmp-dev \
         libssl-dev \
+        ca-certificates \
 #        libsodium-dev \
         libmagickwand-dev \
         libmagickcore-dev \
@@ -35,8 +36,6 @@ RUN pecl install xdebug \
     && docker-php-ext-enable redis \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb
-
-RUN update-ca-certificates -f
 
 RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
  && mkdir -p /usr/src/libsodium \
