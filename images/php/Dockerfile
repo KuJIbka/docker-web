@@ -46,9 +46,9 @@ RUN pecl install xdebug \
 
 RUN git clone https://github.com/tideways/php-profiler-extension.git \
  && cd php-profiler-extension \
- && phpize
- &&  ./configure
- && make
+ && phpize \
+ &&  ./configure \
+ && make \
  && make install
 
 RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
