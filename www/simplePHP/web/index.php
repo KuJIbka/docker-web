@@ -44,3 +44,39 @@ if ($st->fetchColumn(0) === 'someValue') {
     echo "DB - ERROR<br />\n";
 }
 $db->exec('DROP TABLE test_table');
+
+# ------------------------------------------------------------------
+
+$redis = new \Redis();
+$redis->connect(
+    'localhost',
+    6379,
+    null,
+    null,
+    0
+);
+$redis->set('someKey', 'someValue');
+if ($redis->get('someKey') === 'someValue') {
+    echo "Redis - OK<br />\n";
+} else {
+    echo "Redis - ERROR<br />\n";
+}
+
+# ------------------------------------------------------------------
+
+$manager = new MongoDB\Driver\Manager('mongodb://127.0.0.1:27017/');
+$command = new MongoDB\Driver\Command([ 'create' => 'testCollation' ]);
+$manager->executeCommand('test', $command);
+$insert = new MongoDB\Driver\BulkWrite();
+$insert->insert(['someKey' => 'someValue']);
+$writeConcert = new MongoDB\Driver\WriteConcern(
+    MongoDB\Driver\WriteConcern::MAJORITY,
+    1000
+);
+$result = $manager->executeBulkWrite('test.testCollation', $insert, $writeConcert);
+if ($result->getInsertedCount()) {
+    echo "Mongo - OK<br />\n";
+} else {
+    echo "Mongo - ERROR<br />\n";
+}
+$command = new MongoDB\Driver\Command([ 'drop' => 'testCollation' ]);
