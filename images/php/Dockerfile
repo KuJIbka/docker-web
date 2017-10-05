@@ -36,6 +36,7 @@ RUN pecl install xdebug \
     && pecl install mongodb \
     && docker-php-ext-enable mongodb
 
+RUN update-ca-certificates -f
 
 RUN curl -k -L -o /tmp/libsodium_lib.tar.gz "${LIBSODIUM_LIB_URL}" \
  && mkdir -p /usr/src/libsodium \
