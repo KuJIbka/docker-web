@@ -21,6 +21,8 @@ services:
         volumes:
             - ./www:/var/www
             - ./images/php/conf.d:/usr/local/etc/php/conf.d/
+            - /var/run/docker.sock:/var/run/docker.dock
+            - /usr/bin/docker:/usr/bin/docker:ro
     mysql:
         build: ./images/mysql
         ports:
